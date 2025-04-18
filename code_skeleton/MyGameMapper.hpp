@@ -15,6 +15,13 @@ namespace sevens {
  *  - Possibly internal mode or competition mode
  */
 class MyGameMapper : public Generic_game_mapper {
+private:
+    std::unordered_map<uint64_t, Card> cards;
+    std::unordered_map<uint64_t, std::unordered_map<uint64_t, bool>> tableLayout;
+    std::unordered_map<uint64_t, std::vector<Card>> playerHands;
+    std::unordered_map<uint64_t, std::shared_ptr<PlayerStrategy>> strategies;
+
+    std::mt19937 rng;  // Random number generator
 public:
     MyGameMapper();
     ~MyGameMapper() = default;
@@ -38,6 +45,9 @@ public:
     // Strategy management
     void registerStrategy(uint64_t playerID, std::shared_ptr<PlayerStrategy> strategy);
     bool hasRegisteredStrategies() const;
+
+    // Display table layout
+    void print_table_layout() const;
 
 private:
     // You can define any data structures needed to track the game

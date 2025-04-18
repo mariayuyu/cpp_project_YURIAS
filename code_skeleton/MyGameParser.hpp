@@ -14,6 +14,7 @@ public:
     ~MyGameParser() = default;
 
     void read_game(const std::string& filename) override;
+    void read_cards(const std::string& filename) override;
 };
 
 } // namespace sevens
