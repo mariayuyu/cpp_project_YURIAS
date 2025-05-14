@@ -38,3 +38,9 @@ std::string GreedyStrategy::getName() const {
 }
 
 } // namespace sevens
+
+#ifdef BUILD_SHARED_LIB
+extern "C" sevens::PlayerStrategy* createStrategy() {
+    return new sevens::GreedyStrategy();
+}
+#endif

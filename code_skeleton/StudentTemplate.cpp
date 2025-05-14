@@ -9,8 +9,11 @@ namespace sevens {
 
 /**
  * Template for student strategy implementation.
- * Students should rename this class, implement the methods,
- * and compile as a shared library for competition.
+ * To create your own strategy:
+ * 1. Copy this file to a new file (e.g., MyStrategy.cpp)
+ * 2. Rename StudentStrategy to your strategy name
+ * 3. Implement all the virtual methods
+ * 4. Keep the extern "C" createStrategy() function
  */
 class StudentStrategy : public PlayerStrategy {
 public:
@@ -49,8 +52,7 @@ public:
     }
     
     std::string getName() const override {
-        // TODO: rename to something unique
-        return "MyStrategy";
+        return "StudentTemplate";
     }
 
 private:
@@ -58,6 +60,7 @@ private:
     std::mt19937 rng;
 };
 
+// This function is required for dynamic loading
 extern "C" PlayerStrategy* createStrategy() {
     return new StudentStrategy();
 }
