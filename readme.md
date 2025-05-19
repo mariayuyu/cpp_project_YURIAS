@@ -81,11 +81,17 @@ Example scoring factors:
 
 ## Sample Performance & Output
 Here is a snippet of console output during a match (debug mode):
+
 Player 0 plays Card(suit=0, rank=8)
+
 Current Table Layout:
+
 Suit 0: . . . . . . 7 8 . . . . .
+
 Suit 1: . . . . . . 7 . . . . . .
+
 Suit 2: . . . . . . 7 . . . . . .
+
 Suit 3: . . . . . . 7 . . . . . .
 
 
@@ -93,9 +99,9 @@ Suit 3: . . . . . . 7 . . . . . .
 
 ## Sample Game Image
 
-> Replace this with an actual screenshot or video from your implementation.
-
 ![Sample gameplay](sample_gameplay.png)
+
+In the following screenshot, we can observe a game consisting of 2 players playing 2 rounds. 
 
 ---
 
@@ -103,22 +109,32 @@ Suit 3: . . . . . . 7 . . . . . .
 
 ### Build
 
+Although there is already an executable file `sevens_game.exe` available for you to run, you can nonetheless recompile the game if you wish.
 To compile the skeleton code, you can execute this command in the terminal while being located in the folder with these files:
 
 `g++ -std=c++17 -Wall -Wextra -fPIC -shared YuriaStrategy.cpp -o YuriaStrategy.dll`
 
+or 
+
+`g++ main.cpp .\MyCardParser.cpp .\MyGameMapper.cpp .\MyGameParser.cpp .\GreedyStrategy.cpp .\RandomStrategy.cpp .\YuriaStrategy.cpp -o sevens_game.exe`
+
+if you'd like to compile all files, including the base strategies. 
+Beware, this requires one of the newer versions of C++ compiler.
+
 Now to execute the game you can type the following line in the terminal while replacing [mode] with the mode you'd like to test (demo, internal):
 
-`.\sevens_game.exe [model]`
+`.\sevens_game.exe [mode]`
 
 If you'd like to test the competition mode,
-replaces [strategy1].dll and [strategy2].dll with the respective .dll strategy files you'd like to see compete:
+replaces [strategy1].dll, [strategy2].dll, [strategy3].dll with the respective .dll strategy files you'd like to see compete:
 
 `.\sevens_game.exe competition [strategy1].dll [strategy2].dll`
 
 ---
 
 ## Limitations
+
+Due to time-constaint, the AI we implemented is not the most advanced, and often times it loses against the base strategies. Here are some of its limitations, and what can be implemented in the future to better the AI's win rate:
 
 - No learning or memory across games: the AI resets between rounds and has no long-term memory.
 
@@ -132,6 +148,8 @@ replaces [strategy1].dll and [strategy2].dll with the respective .dll strategy f
 
 ## Conclusion
 
+Although as mentioned above, YuriaStrategy AI has it's limitations and does not have the best winrate, it is still a moderately complex bot that takes into account several functions of the game.
+
 The YuriaStrategy bot:
 
 - Demonstrates adaptive behavior across game stages.
@@ -142,4 +160,4 @@ The YuriaStrategy bot:
 
 - Could be extended into a more intelligent AI with reinforcement learning or probabilistic simulations.
 
-This project allowed for practical application of object-oriented C++ programming.
+Through this project, we were able to bring to life the Sevengs Game by completing the base code written by our professors, adding a simple interface that appears in the terminal to be able to clearly see the table lay-out and the cards played, as well as implement our own strategy as mentioned above. This project allowed for practical application of object-oriented C++ programming.
