@@ -1,4 +1,4 @@
-// MyStrategy.cpp
+// YuriaStrategy.cpp
 #include "PlayerStrategy.hpp"
 #include <vector>
 #include <unordered_map>
@@ -10,16 +10,16 @@
 
 namespace sevens {
 
-class MyStrategy : public PlayerStrategy {
+class YuriaStrategy : public PlayerStrategy {
 public:
-    MyStrategy() {
+    YuriaStrategy() {
         auto seed = static_cast<unsigned long>(
             std::chrono::system_clock::now().time_since_epoch().count()
         );
         rng.seed(seed);
     }
 
-    ~MyStrategy() override = default;
+    ~YuriaStrategy() override = default;
 
     void initialize(uint64_t playerID) override {
         myID = playerID;
@@ -102,7 +102,7 @@ public:
     }
 
     std::string getName() const override {
-        return "MyStrategy";
+        return "YuriaStrategy";
     }
 
 private:
@@ -317,7 +317,7 @@ private:
 };
 
 extern "C" PlayerStrategy* createStrategy() {
-    return new MyStrategy();
+    return new YuriaStrategy();
 }
 
 }  // namespace sevens
