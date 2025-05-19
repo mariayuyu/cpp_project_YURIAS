@@ -11,9 +11,6 @@ MyGameMapper::MyGameMapper() {
 }
 
 void MyGameMapper::print_table_layout() const {
-    static const char* suit_symbols[4] = {"\u2660", "\u2665", "\u2666", "\u2663"}; // Spades, Hearts, Diamonds, Clubs
-    static const char* colors[4] = {"\033[1;37m", "\033[1;31m", "\033[1;34m", "\033[1;32m"};
-    const char* reset_color = "\033[0m";
 
     std::cout << "Current Table Layout:\n";
     for (uint64_t suit = 0; suit < 4; ++suit) {

@@ -21,6 +21,9 @@ int main(int argc, char* argv[]) {
     
     std::string mode = argv[1];
     
+    // ----------------------
+    // Mode 1: Internal
+    // ----------------------
     if (mode == "internal") {
         //std::cout << "[main] Internal mode is not fully implemented.\n";
         
@@ -28,16 +31,22 @@ int main(int argc, char* argv[]) {
         game.read_cards("");  // Default card generation
         game.read_game("");    // Initialize table with 7s
 
+        // register 4 players using the RandomStrategy
         for (uint64_t pid = 0; pid < 4; ++pid) {
             game.registerStrategy(pid, std::make_shared<sevens::RandomStrategy>());
         }
 
+        // Play the game and display the results (rankings per player ID)
         auto results = game.compute_and_display_game(4);
         std::cout << "\nFinal results:\n";
         for (const auto& result : results) {
             std::cout << "Player " << result.first << " finished with rank " << result.second << "\n";
         }
     }
+
+    // -----------------------
+    // Mode 2: demo
+    // -----------------------
     else if (mode == "demo") {
         //std::cout << "[main] Demo mode is not fully implemented.\n";
         std::vector<std::string> playerNames = {"Alice", "Bob", "Charlie", "Dana"};
@@ -56,6 +65,10 @@ int main(int argc, char* argv[]) {
             std::cout << result.first << " finished with rank " << result.second << "\n";
         }
     }
+
+    // --------------------------
+    // Mode 3: competition
+    // --------------------------
     else if (mode == "competition") {
         if (argc < 3) {
             std::cout << "Usage: ./sevens_game competition <strategy1.dll> <strategy2.dll> ...\n";
@@ -66,22 +79,20 @@ int main(int argc, char* argv[]) {
         game.read_cards("");
         game.read_game("");
 
-        // 声明存储策略名称的vector
         std::vector<std::string> loaded_strategy_names;
 
-        // 加载每个策略
+        // Load each strategy passed via command line (starting from argv[2])
         for (int i = 2; i < argc; i++) {
             try {
-                // 检查是否是有效的策略库
                 if (!StrategyLoader::isValidLibrary(argv[i])) {
                     std::cerr << "Invalid strategy library: " << argv[i] << "\n";
                     continue;
                 }
 
-                // 加载策略
+                // attempt to load the strategy dynamically from the shared library
                 auto strategy = StrategyLoader::loadFromLibrary(argv[i]);
-                // 存储策略名称
                 loaded_strategy_names.push_back(strategy->getName());
+                // register it with the game
                 game.registerStrategy(i-2, strategy);
                 std::cout << "Successfully loaded strategy from " << argv[i] 
                          << " (" << strategy->getName() << ")\n";
@@ -93,7 +104,6 @@ int main(int argc, char* argv[]) {
             }
         }
 
-        // 运行游戏
         auto results = game.compute_and_display_game(argc - 2);
         
         std::cout << "\nFinal results:\n";
@@ -103,6 +113,9 @@ int main(int argc, char* argv[]) {
                       << result.second << "\n";
         }
     }
+    // ---------------------
+    // Unknown mode
+    // ---------------------
     else {
         std::cerr << "[main] Unknown mode: " << mode << std::endl;
     }

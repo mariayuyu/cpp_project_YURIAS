@@ -14,15 +14,20 @@ namespace sevens {
  */
 class StrategyLoader {
 public:
+    /**
+     * brief load a PlayerStrategy from a shared library (.dll file)
+     * 
+     * param libraryPath the path to the shared library file
+     * return a shared_ptr managing the PlayerStrategy instace
+     * throws runtime_error if the library can't be loaded or the create function is missing
+     */
     static std::shared_ptr<PlayerStrategy> loadFromLibrary(const std::string& libraryPath) {
-        // 尝试加载DLL
         HMODULE hDll = LoadLibraryA(libraryPath.c_str());
         if (!hDll) {
             DWORD error = GetLastError();
             std::string errorMsg = "Failed to load library: " + libraryPath + 
                                  "\nError code: " + std::to_string(error);
             
-            // 获取更详细的错误信息
             char* messageBuffer = nullptr;
             size_t size = FormatMessageA(
                 FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
@@ -44,7 +49,6 @@ public:
         }
 
         try {
-            // 获取创建策略的函数指针
             using CreateStrategyFunc = PlayerStrategy* (*)();
             CreateStrategyFunc createStrategy = 
                 reinterpret_cast<CreateStrategyFunc>(
@@ -60,7 +64,6 @@ public:
                 );
             }
 
-            // 创建策略实例
             PlayerStrategy* strategy = createStrategy();
             if (!strategy) {
                 FreeLibrary(hDll);
@@ -69,7 +72,6 @@ public:
                 );
             }
 
-            // 使用自定义删除器的shared_ptr，确保正确清理资源
             return std::shared_ptr<PlayerStrategy>(
                 strategy,
                 [hDll](PlayerStrategy* p) {
@@ -89,21 +91,18 @@ public:
         }
     }
 
-    // 检查文件是否是有效的DLL
     static bool isValidLibrary(const std::string& libraryPath) {
         HMODULE hDll = LoadLibraryA(libraryPath.c_str());
         if (!hDll) {
             return false;
         }
 
-        // 检查是否包含必要的函数
         auto createStrategy = GetProcAddress(hDll, "createStrategy");
         FreeLibrary(hDll);
         
         return createStrategy != nullptr;
     }
 
-    // 获取库的错误信息
     static std::string getLastErrorMessage() {
         DWORD error = GetLastError();
         char* messageBuffer = nullptr;
